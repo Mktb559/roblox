@@ -1,19 +1,48 @@
-# Roblox Daily Claim System
+# Roblox Studio Game Systems
 
-## Overview
-System Daily Claim untuk Roblox Studio dengan 7-day reward progression.
+Collection of game systems untuk Roblox Studio.
 
-**⚠️ Already have a money system (e.g., UnifiedSaveSystem)?**
-👉 See [INTEGRATION_GUIDE.md](INTEGRATION_GUIDE.md) for seamless integration!
+---
 
-## Features
+## 📦 Available Systems
+
+### 1. 💰 Daily Claim System
+7-day progressive reward system dengan beautiful UI.
+
+**Features:**
 - ✅ Daily claim popup automatically bila player join
 - ✅ Progressive rewards dari Day 1 sampai Day 7
 - ✅ Data persistence menggunakan DataStoreService
 - ✅ Beautiful UI dengan animations
 - ✅ Streak system - reset kalau miss 1 hari
+- ✅ Integrates dengan existing money systems
 
-## Reward Structure
+👉 **Setup Guide:** [QUICK_START.md](QUICK_START.md)
+👉 **Integration:** [INTEGRATION_GUIDE.md](INTEGRATION_GUIDE.md)
+
+### 2. 🌦️ Weather & Time Cycle System
+Automatic day/night cycle dan dynamic weather system.
+
+**Features:**
+- ✅ Smooth day/night transitions (Dawn, Day, Dusk, Night)
+- ✅ 4 weather types: Clear, Rain, Storm, Fog
+- ✅ Realistic rain particles
+- ✅ Customizable cycle duration dan weather probability
+- ✅ Dynamic lighting dan fog effects
+- ✅ Manual weather control
+
+👉 **Setup Guide:** [WEATHER_SETUP.md](WEATHER_SETUP.md)
+
+---
+
+## 🚀 Quick Installation
+
+**Already have a money system (e.g., UnifiedSaveSystem)?**
+👉 See [INTEGRATION_GUIDE.md](INTEGRATION_GUIDE.md) for seamless integration!
+
+---
+
+## 💰 Daily Claim - Reward Structure
 | Day | Reward |
 |-----|--------|
 | Day 1 | $100 |
@@ -28,35 +57,49 @@ System Daily Claim untuk Roblox Studio dengan 7-day reward progression.
 
 *Default currency: "Cash" (customizable in config)*
 
-## Installation
+## 📥 Installation Overview
 
-### Step 1: Create Folder Structure
-Dalam Roblox Studio, create folders ini:
-```
-ServerScriptService/
-  └── DailyClaimServer.lua
+Each system has its own detailed setup guide:
 
-ReplicatedStorage/
-  └── DailyRewardsConfig.lua
+### Daily Claim System:
+- 📖 **Quick Start:** [QUICK_START.md](QUICK_START.md)
+- 📖 **Detailed Setup:** [UI_SETUP.md](UI_SETUP.md)
+- 📖 **Integration Guide:** [INTEGRATION_GUIDE.md](INTEGRATION_GUIDE.md)
 
-StarterGui/
-  └── DailyClaimUI (ScreenGui)
-      └── DailyClaimClient.lua (LocalScript)
-```
+### Weather & Time System:
+- 📖 **Complete Guide:** [WEATHER_SETUP.md](WEATHER_SETUP.md)
 
-### Step 2: Enable DataStore
+---
+
+## 💰 Daily Claim - Installation
+
+### Step 1: Enable DataStore
 1. Game Settings → Security
 2. Enable "Enable Studio Access to API Services"
 
-### Step 3: Copy Scripts
+### Step 2: Copy Scripts
 1. Copy content dari `src/ServerScriptService/DailyClaimServer.lua` → ServerScriptService
 2. Copy content dari `src/ReplicatedStorage/DailyRewardsConfig.lua` → ReplicatedStorage
 3. Copy content dari `src/StarterGui/DailyClaimClient.lua` → StarterGui (dalam LocalScript)
 
-### Step 4: Setup UI
-Ikut instructions dalam `UI_SETUP.md` untuk create UI elements.
+### Step 3: Test
+Ikut instructions dalam `QUICK_START.md` untuk complete setup.
 
-## How It Works
+---
+
+## 🌦️ Weather & Time - Installation
+
+See [WEATHER_SETUP.md](WEATHER_SETUP.md) for complete installation guide.
+
+**Quick Setup:**
+1. Copy `WeatherConfig.lua` → ReplicatedStorage (ModuleScript)
+2. Copy `DayNightCycle.lua` → ServerScriptService (Script)
+3. Copy `WeatherSystem.lua` → ServerScriptService (Script)
+4. Press F5 and watch the magic! 🌞🌙⛈️
+
+---
+
+## 💰 Daily Claim - How It Works
 
 1. **Player Join** → System check last claim time dari DataStore
 2. **Calculate** → Check kalau dah 24 hours lepas
