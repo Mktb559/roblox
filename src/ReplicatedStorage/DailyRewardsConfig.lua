@@ -31,7 +31,7 @@ DailyRewardsConfig.ClaimCooldown = 86400
 DailyRewardsConfig.StreakResetTime = 172800
 
 -- Currency name (change kalau guna custom currency)
-DailyRewardsConfig.CurrencyName = "Coins"
+DailyRewardsConfig.CurrencyName = "Money"
 
 -- UI Settings
 DailyRewardsConfig.UI = {

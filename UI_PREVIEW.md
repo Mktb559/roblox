@@ -79,7 +79,7 @@ Claimed Claimed Current  Next   Next   Next   Next
 - Not clickable
 
 **After Claiming (Success):**
-- Text changes to: "✓ Claimed 350 Coins!"
+- Text changes to: "✓ Claimed 350 Money!"
 - Popup closes after 2 seconds
 
 ---
@@ -92,7 +92,7 @@ Claimed Claimed Current  Next   Next   Next   Next
 |---------|-------|-----|
 | Primary (Current Day) | Blue | 75, 150, 255 |
 | Secondary (Background) | Dark Gray | 50, 50, 50 |
-| Accent (Coins) | Gold | 255, 200, 50 |
+| Accent (Money) | Gold | 255, 200, 50 |
 | Success (Claimed) | Green | 50, 200, 100 |
 | Text | White | 255, 255, 255 |
 
@@ -136,7 +136,7 @@ Claimed Claimed Current  Next   Next   Next   Next
 │          └──────────────────────┘              │
 │                                                 │
 │  Player Name                                    │
-│  Coins: 850                                     │
+│  Money: 850                                     │
 └─────────────────────────────────────────────────┘
 ```
 
@@ -170,8 +170,8 @@ Server Validates
        ↓
 [Success]
        ↓
-Button Text: "✓ Claimed 350 Coins!"
-Coins Added to Leaderboard
+Button Text: "✓ Claimed 350 Money!"
+Money Added to Leaderboard
        ↓
 [Wait 2 seconds]
        ↓

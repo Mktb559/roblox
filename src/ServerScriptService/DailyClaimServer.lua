@@ -133,7 +133,7 @@ local function CalculateClaimStatus(playerData)
 end
 
 --[[
-    Setup leaderboard untuk Coins
+    Setup leaderboard untuk Currency
 ]]
 local function SetupLeaderboard(player)
     local leaderstats = player:FindFirstChild("leaderstats")
@@ -242,7 +242,7 @@ ClaimRewardEvent.OnServerEvent:Connect(function(player)
 
         -- Notify client
         ClaimRewardEvent:FireClient(player, true, reward)
-        print("Player", player.Name, "claimed Day", status.CurrentDay, "reward:", reward, "coins")
+        print("Player", player.Name, "claimed Day", status.CurrentDay, "reward:", reward, DailyRewardsConfig.CurrencyName)
     else
         ClaimRewardEvent:FireClient(player, false, "Failed to give reward")
     end

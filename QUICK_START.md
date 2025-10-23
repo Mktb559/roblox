@@ -36,7 +36,7 @@ StarterGui
 2. Wait 2 seconds
 3. Popup muncul!
 4. Click **CLAIM**
-5. Check Coins dalam leaderboard ✅
+5. Check Money dalam leaderboard ✅
 
 ---
 
@@ -52,7 +52,7 @@ StarterGui
 | 6   | 1,000  |
 | 7   | 2,000  |
 
-**Total: 4,900 coins!**
+**Total: 4,900 money!**
 
 ---
 
@@ -64,7 +64,7 @@ StarterGui
 **Data tak save?**
 → Make sure API Services enabled
 
-**Coins tak bertambah?**
+**Money tak bertambah?**
 → Make sure server script dalam ServerScriptService (bukan ReplicatedStorage)
 
 ---

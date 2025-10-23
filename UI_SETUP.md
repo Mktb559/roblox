@@ -111,7 +111,7 @@ StarterGui
 2. Wait 2-3 seconds
 3. Popup sepatutnya muncul dengan 7 days rewards
 4. Click **CLAIM** button
-5. Check leaderboard - "Coins" sepatutnya bertambah
+5. Check leaderboard - "Money" sepatutnya bertambah
 6. Click **Stop** (Shift+F5)
 
 ### Method 2: Play dengan Multiple Players (Recommended)
@@ -140,7 +140,7 @@ StarterGui
 - Make sure API Services enabled
 - Try add `wait(3)` dalam client script before RequestDataEvent:FireServer()
 
-### Issue 3: Coins tidak bertambah
+### Issue 3: Money tidak bertambah
 
 **Solution:**
 - Check kalau ada folder "leaderstats" dalam player

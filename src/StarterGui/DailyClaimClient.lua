@@ -177,13 +177,13 @@ local function CreateDayCard(parent, day, reward, currentDay, canClaim)
     rewardLabel.ZIndex = 4
     rewardLabel.Parent = card
 
-    -- Coins text
+    -- Currency text
     local coinsLabel = Instance.new("TextLabel")
     coinsLabel.Size = UDim2.new(1, 0, 0, 20)
     coinsLabel.Position = UDim2.new(0, 0, 0, 70)
     coinsLabel.BackgroundTransparency = 1
     coinsLabel.Font = Enum.Font.Gotham
-    coinsLabel.Text = "Coins"
+    coinsLabel.Text = DailyRewardsConfig.CurrencyName
     coinsLabel.TextSize = 12
     coinsLabel.TextColor3 = DailyRewardsConfig.UI.TextColor
     coinsLabel.TextTransparency = 0.3
@@ -372,7 +372,7 @@ end
 ]]
 ClaimRewardEvent.OnClientEvent:Connect(function(success, data)
     if success then
-        print("Claimed successfully! Reward:", data, "coins")
+        print("Claimed successfully! Reward:", data, DailyRewardsConfig.CurrencyName)
 
         -- Update UI
         if mainGui then
@@ -380,7 +380,7 @@ ClaimRewardEvent.OnClientEvent:Connect(function(success, data)
             if popup then
                 local button = popup:FindFirstChild("ClaimButton")
                 if button then
-                    button.Text = "✓ Claimed " .. data .. " Coins!"
+                    button.Text = "✓ Claimed " .. data .. " " .. DailyRewardsConfig.CurrencyName .. "!"
                     button.BackgroundColor3 = DailyRewardsConfig.UI.SuccessColor
 
                     -- Close after 2 seconds

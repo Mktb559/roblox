@@ -13,15 +13,15 @@ System Daily Claim untuk Roblox Studio dengan 7-day reward progression.
 ## Reward Structure
 | Day | Reward |
 |-----|--------|
-| Day 1 | 100 coins |
-| Day 2 | 200 coins |
-| Day 3 | 350 coins |
-| Day 4 | 500 coins |
-| Day 5 | 750 coins |
-| Day 6 | 1,000 coins |
-| Day 7 | 2,000 coins |
+| Day 1 | 100 money |
+| Day 2 | 200 money |
+| Day 3 | 350 money |
+| Day 4 | 500 money |
+| Day 5 | 750 money |
+| Day 6 | 1,000 money |
+| Day 7 | 2,000 money |
 
-**Total: 4,900 coins untuk complete 7 hari!**
+**Total: 4,900 money untuk complete 7 hari!**
 
 ## Installation
 
@@ -56,7 +56,7 @@ Ikut instructions dalam `UI_SETUP.md` untuk create UI elements.
 1. **Player Join** → System check last claim time dari DataStore
 2. **Calculate** → Check kalau dah 24 hours lepas
 3. **Show Popup** → Display reward dan current day streak
-4. **Claim Button** → Update data, give coins, close popup
+4. **Claim Button** → Update data, give money, close popup
 5. **Save** → Persist data ke DataStore
 
 ## Configuration
@@ -83,7 +83,7 @@ Untuk test dalam Studio:
 
 - Streak reset kalau player miss lebih dari 24 hours
 - Data saved per player menggunakan UserId
-- Leaderboard "Coins" automatically created
+- Leaderboard "Money" automatically created
 - UI responsive untuk all screen sizes
 
 ## Support
