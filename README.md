@@ -3,6 +3,9 @@
 ## Overview
 System Daily Claim untuk Roblox Studio dengan 7-day reward progression.
 
+**⚠️ Already have a money system (e.g., UnifiedSaveSystem)?**
+👉 See [INTEGRATION_GUIDE.md](INTEGRATION_GUIDE.md) for seamless integration!
+
 ## Features
 - ✅ Daily claim popup automatically bila player join
 - ✅ Progressive rewards dari Day 1 sampai Day 7
@@ -13,15 +16,17 @@ System Daily Claim untuk Roblox Studio dengan 7-day reward progression.
 ## Reward Structure
 | Day | Reward |
 |-----|--------|
-| Day 1 | 100 money |
-| Day 2 | 200 money |
-| Day 3 | 350 money |
-| Day 4 | 500 money |
-| Day 5 | 750 money |
-| Day 6 | 1,000 money |
-| Day 7 | 2,000 money |
+| Day 1 | $100 |
+| Day 2 | $200 |
+| Day 3 | $350 |
+| Day 4 | $500 |
+| Day 5 | $750 |
+| Day 6 | $1,000 |
+| Day 7 | $2,000 |
 
-**Total: 4,900 money untuk complete 7 hari!**
+**Total: $4,900 untuk complete 7 hari!**
+
+*Default currency: "Cash" (customizable in config)*
 
 ## Installation
 
@@ -56,7 +61,7 @@ Ikut instructions dalam `UI_SETUP.md` untuk create UI elements.
 1. **Player Join** → System check last claim time dari DataStore
 2. **Calculate** → Check kalau dah 24 hours lepas
 3. **Show Popup** → Display reward dan current day streak
-4. **Claim Button** → Update data, give money, close popup
+4. **Claim Button** → Update data, give cash, close popup
 5. **Save** → Persist data ke DataStore
 
 ## Configuration
@@ -83,7 +88,7 @@ Untuk test dalam Studio:
 
 - Streak reset kalau player miss lebih dari 24 hours
 - Data saved per player menggunakan UserId
-- Leaderboard "Money" automatically created
+- Leaderboard "Cash" automatically created (or uses existing one)
 - UI responsive untuk all screen sizes
 
 ## Support

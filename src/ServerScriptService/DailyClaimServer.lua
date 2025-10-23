@@ -134,10 +134,16 @@ end
 
 --[[
     Setup leaderboard untuk Currency
+    NOTE: If player already has leaderstats (e.g., from UnifiedSaveSystem),
+    this will NOT create a new one - it will use the existing one!
 ]]
 local function SetupLeaderboard(player)
+    -- Wait for existing leaderstats to load (if using other money systems)
+    wait(0.5)
+
     local leaderstats = player:FindFirstChild("leaderstats")
     if not leaderstats then
+        -- Only create if doesn't exist
         leaderstats = Instance.new("Folder")
         leaderstats.Name = "leaderstats"
         leaderstats.Parent = player
@@ -145,6 +151,7 @@ local function SetupLeaderboard(player)
 
     local coins = leaderstats:FindFirstChild(DailyRewardsConfig.CurrencyName)
     if not coins then
+        -- Only create currency if doesn't exist
         coins = Instance.new("IntValue")
         coins.Name = DailyRewardsConfig.CurrencyName
         coins.Value = 0
@@ -156,8 +163,18 @@ end
 
 --[[
     Give reward kepada player
+    Integrates dengan existing money systems (e.g., UnifiedSaveSystem)
 ]]
 local function GiveReward(player, amount)
+    -- Try to use global AddMoney function if available (better integration)
+    if _G.AddMoney then
+        local success = _G.AddMoney(player, amount)
+        if success then
+            return true
+        end
+    end
+
+    -- Fallback: Direct leaderstat manipulation
     local leaderstats = player:FindFirstChild("leaderstats")
     if leaderstats then
         local coins = leaderstats:FindFirstChild(DailyRewardsConfig.CurrencyName)
