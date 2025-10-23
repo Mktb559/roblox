@@ -1,5 +1,5 @@
 --[[
-    Weather System
+    Weather System (IMPROVED - Better Rain Effects!)
 
     Randomly cycles through different weather conditions:
     - Clear (Sunny)
@@ -13,6 +13,7 @@
 local Lighting = game:GetService("Lighting")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = game:GetService("Workspace")
+local Players = game:GetService("Players")
 
 -- Load configuration
 local WeatherConfig = require(ReplicatedStorage:WaitForChild("WeatherConfig"))
@@ -25,79 +26,120 @@ end
 
 -- Variables
 local currentWeather = "Clear"
-local rainPart = nil
-local rainEmitter = nil
+local playerRainParts = {}  -- Track rain parts per player
 
 --[[
-    Create rain effect (particle emitter attached to invisible part above map)
+    Create rain effect for a specific player (follows them around)
 ]]
-local function createRainEffect()
-    -- Remove existing rain if any
-    if rainPart then
-        rainPart:Destroy()
-        rainPart = nil
-        rainEmitter = nil
-    end
+local function createPlayerRainEffect(player)
+    local character = player.Character
+    if not character then return nil end
 
-    -- Create an invisible part high above the map
-    rainPart = Instance.new("Part")
-    rainPart.Name = "RainCloud"
-    rainPart.Anchored = true
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    if not humanoidRootPart then return nil end
+
+    -- Create an invisible part above player's head
+    local rainPart = Instance.new("Part")
+    rainPart.Name = "PlayerRainCloud"
+    rainPart.Anchored = false
     rainPart.CanCollide = false
     rainPart.Transparency = 1
-    rainPart.Size = Vector3.new(2048, 1, 2048)  -- Large area to cover map
-    rainPart.Position = Vector3.new(0, 500, 0)   -- High up
+    rainPart.Size = Vector3.new(50, 1, 50)  -- Cover area around player
+    rainPart.CFrame = humanoidRootPart.CFrame + Vector3.new(0, 30, 0)
     rainPart.Parent = Workspace
 
-    -- Create particle emitter for rain
-    rainEmitter = Instance.new("ParticleEmitter")
+    -- Create AlignPosition to make it follow player
+    local attachment0 = Instance.new("Attachment")
+    attachment0.Parent = rainPart
+
+    local attachment1 = Instance.new("Attachment")
+    attachment1.Parent = humanoidRootPart
+    attachment1.Position = Vector3.new(0, 30, 0)  -- 30 studs above player
+
+    local alignPosition = Instance.new("AlignPosition")
+    alignPosition.Attachment0 = attachment0
+    alignPosition.Attachment1 = attachment1
+    alignPosition.MaxForce = 50000
+    alignPosition.Responsiveness = 25
+    alignPosition.Parent = rainPart
+
+    -- Create particle emitter
+    local rainEmitter = Instance.new("ParticleEmitter")
     rainEmitter.Name = "RainEmitter"
     rainEmitter.Parent = rainPart
 
-    return rainEmitter
+    -- Configure rain to look like actual rain drops
+    rainEmitter.Texture = "rbxasset://textures/particles/sparkles_main.dds"  -- Better for rain
+    rainEmitter.Color = ColorSequence.new(Color3.fromRGB(150, 180, 255))  -- Blue-ish white
+
+    -- Rain drop size
+    rainEmitter.Size = NumberSequence.new({
+        NumberSequenceKeypoint.new(0, 0.1),
+        NumberSequenceKeypoint.new(1, 0.1)
+    })
+
+    -- Transparency (visible drops)
+    rainEmitter.Transparency = NumberSequence.new({
+        NumberSequenceKeypoint.new(0, 0.3),
+        NumberSequenceKeypoint.new(0.5, 0.4),
+        NumberSequenceKeypoint.new(1, 1)
+    })
+
+    rainEmitter.Lifetime = NumberRange.new(1.5, 2)
+    rainEmitter.Rate = 300  -- Will be updated based on weather
+    rainEmitter.Rotation = NumberRange.new(0, 0)
+    rainEmitter.RotSpeed = NumberRange.new(0, 0)
+    rainEmitter.Speed = NumberRange.new(40, 50)
+    rainEmitter.SpreadAngle = Vector2.new(3, 3)  -- Slight spread
+    rainEmitter.VelocityInheritance = 0
+    rainEmitter.Acceleration = Vector3.new(0, -20, 0)  -- Gravity
+    rainEmitter.EmissionDirection = Enum.NormalId.Bottom
+    rainEmitter.Enabled = false  -- Start disabled
+    rainEmitter.LightEmission = 0.2
+
+    return {Part = rainPart, Emitter = rainEmitter}
 end
 
 --[[
-    Update rain effect based on weather settings
+    Setup rain for all current players
 ]]
-local function updateRainEffect(weatherType)
+local function setupRainForAllPlayers(weatherType)
     local settings = WeatherConfig.WeatherSettings.Weather[weatherType]
 
     if not settings or not settings.ParticleRate then
-        -- No rain for this weather type
-        if rainPart then
-            rainPart:Destroy()
-            rainPart = nil
-            rainEmitter = nil
+        -- Remove all rain
+        for userId, rainData in pairs(playerRainParts) do
+            if rainData and rainData.Part then
+                rainData.Part:Destroy()
+            end
         end
+        playerRainParts = {}
         return
     end
 
-    -- Create rain if doesn't exist
-    if not rainEmitter then
-        rainEmitter = createRainEffect()
+    -- Create/update rain for each player
+    for _, player in pairs(Players:GetPlayers()) do
+        local userId = player.UserId
+
+        -- Remove old rain part if exists
+        if playerRainParts[userId] and playerRainParts[userId].Part then
+            playerRainParts[userId].Part:Destroy()
+        end
+
+        -- Create new rain
+        local rainData = createPlayerRainEffect(player)
+        if rainData then
+            -- Apply weather settings
+            rainData.Emitter.Rate = settings.ParticleRate
+            rainData.Emitter.Speed = NumberRange.new(settings.ParticleSpeed, settings.ParticleSpeed + 10)
+            rainData.Emitter.Size = settings.ParticleSize
+            rainData.Emitter.Enabled = true
+
+            playerRainParts[userId] = rainData
+
+            print("🌧️ Created rain effect for player:", player.Name)
+        end
     end
-
-    -- Configure rain particles
-    rainEmitter.Texture = "rbxasset://textures/particles/smoke_main.dds"
-    rainEmitter.Color = ColorSequence.new(Color3.fromRGB(200, 200, 255))
-    rainEmitter.Size = settings.ParticleSize
-    rainEmitter.Transparency = NumberSequence.new({
-        NumberSequenceKeypoint.new(0, 0.5),
-        NumberSequenceKeypoint.new(1, 1)
-    })
-    rainEmitter.Lifetime = NumberRange.new(2, 3)
-    rainEmitter.Rate = settings.ParticleRate
-    rainEmitter.Rotation = NumberRange.new(0, 0)
-    rainEmitter.RotSpeed = NumberRange.new(0, 0)
-    rainEmitter.Speed = NumberRange.new(settings.ParticleSpeed, settings.ParticleSpeed + 10)
-    rainEmitter.SpreadAngle = Vector2.new(5, 5)
-    rainEmitter.VelocityInheritance = 0
-    rainEmitter.Acceleration = Vector3.new(0, -10, 0)
-    rainEmitter.EmissionDirection = Enum.NormalId.Bottom
-    rainEmitter.Enabled = true
-
-    print("🌧️ Rain effect updated for: " .. weatherType)
 end
 
 --[[
@@ -145,7 +187,7 @@ local function changeWeather(weatherType)
 
     -- Apply weather effects
     applyWeatherSettings(weatherType)
-    updateRainEffect(weatherType)
+    setupRainForAllPlayers(weatherType)
 
     -- Show notification
     if WeatherConfig.Notifications.ShowWeatherChanges then
@@ -156,6 +198,43 @@ local function changeWeather(weatherType)
         end
     end
 end
+
+--[[
+    Handle player joining (create rain for them if raining)
+]]
+Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function(character)
+        wait(1)  -- Wait for character to fully load
+
+        -- If currently raining, create rain for this player
+        if currentWeather == "Rain" or currentWeather == "Storm" then
+            local settings = WeatherConfig.WeatherSettings.Weather[currentWeather]
+            if settings and settings.ParticleRate then
+                local rainData = createPlayerRainEffect(player)
+                if rainData then
+                    rainData.Emitter.Rate = settings.ParticleRate
+                    rainData.Emitter.Speed = NumberRange.new(settings.ParticleSpeed, settings.ParticleSpeed + 10)
+                    rainData.Emitter.Size = settings.ParticleSize
+                    rainData.Emitter.Enabled = true
+
+                    playerRainParts[player.UserId] = rainData
+                    print("🌧️ Created rain for new player:", player.Name)
+                end
+            end
+        end
+    end)
+end)
+
+--[[
+    Handle player leaving (cleanup their rain)
+]]
+Players.PlayerRemoving:Connect(function(player)
+    local userId = player.UserId
+    if playerRainParts[userId] and playerRainParts[userId].Part then
+        playerRainParts[userId].Part:Destroy()
+        playerRainParts[userId] = nil
+    end
+end)
 
 --[[
     Main weather cycle loop
@@ -193,6 +272,7 @@ _G.ChangeWeather = function(weatherType)
     end
 end
 
-print("🌦️ Weather System loaded!")
+print("🌦️ Weather System loaded! (IMPROVED)")
 print("Available weather types: Clear, Rain, Storm, Fog")
 print("Use _G.ChangeWeather('Rain') to manually change weather")
+print("💧 Rain now follows players!")
